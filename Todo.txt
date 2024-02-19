@@ -1,3 +1,0 @@
--> Go-fiber
--> gorm/postgres
--> jwt-golang

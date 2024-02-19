@@ -11,7 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var SecretKey = "supasicrit"
+var SecretKey = "secret"
 
 func GetUser(c *fiber.Ctx) error {
 	// Query to postgres from params and get the user row based on the id taken from the cookies
@@ -40,7 +40,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	var user models.User
-	database.DB.Where("email = ?", data["email"]).First(user)
+	database.DB.Where("email = ?", data["email"]).First(&user)
 	if user.ID == 0 {
 		c.Status(fiber.StatusNotFound)
 		return c.JSON(&fiber.Map{
@@ -69,7 +69,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	cookie := fiber.Cookie{
-		Name:     "task-mgmt-jwt",
+		Name:     "jwt",
 		Value:    token,
 		Expires:  time.Now().Add(time.Hour * 24),
 		HTTPOnly: true, // front-end should not be able to access the cookie
